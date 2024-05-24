@@ -10,10 +10,16 @@ public class LizardAgent : Agent
     [SerializeField] SpringJoint[] springJoints;
     float[] originalMaxLengths;
 
-    // Start is called before the first frame update
-    void Start()
+    [SerializeField] Transform targetObject;
+
+    // Things to test for training
+    Vector3 previousPosition = Vector3.zero;
+    float previousDistance;
+
+    // For inference
+    public void SetTargetObject(Transform target)
     {
-        
+        targetObject = target;
     }
 
     public override void Initialize()
@@ -22,6 +28,12 @@ public class LizardAgent : Agent
         for (int i = 0; i < springJoints.Length; i++)
         {
             originalMaxLengths[i] = springJoints[i].maxDistance;
+        }
+
+        previousPosition = transform.position;
+        if (targetObject)
+        {
+            previousDistance = Vector3.Distance(transform.position, targetObject.position);
         }
     }
 
@@ -34,7 +46,15 @@ public class LizardAgent : Agent
     {
         base.CollectObservations(sensor);
 
-
+        sensor.AddObservation(transform.position.x);
+        sensor.AddObservation(transform.position.y);
+        sensor.AddObservation(transform.position.z);
+        sensor.AddObservation(transform.forward.x);
+        sensor.AddObservation(transform.forward.y);
+        sensor.AddObservation(transform.forward.z);
+        sensor.AddObservation(transform.up.x);
+        sensor.AddObservation(transform.up.y);
+        sensor.AddObservation(transform.up.z);
     }
 
     public override void Heuristic(in ActionBuffers actionsOut)
@@ -95,6 +115,15 @@ public class LizardAgent : Agent
                 springJoints[i].maxDistance = originalMaxLengths[i] * actions.ContinuousActions[i];
             }
         }
+
+
+        AddReward(transform.position.z - previousPosition.z);  // use to train one dimensional movement 
+        previousPosition = transform.position;
+
+        // Target navigation
+        //float curDist = Vector3.Distance(transform.position, targetObject.position);
+        //AddReward(previousDistance - curDist);
+        //previousDistance = curDist;
     }
 
 
