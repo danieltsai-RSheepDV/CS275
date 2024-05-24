@@ -33,6 +33,29 @@ public class LizardAgent : Agent
     public override void Heuristic(in ActionBuffers actionsOut)
     {
         base.Heuristic(actionsOut);
+
+        float[] outputmuscles = new float[4];
+
+        // Im sorry
+        if (Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            
+        }
+
+        if (Input.GetKeyDown(KeyCode.Alpha2))
+        {
+
+        }
+
+        if (Input.GetKeyDown(KeyCode.Alpha3))
+        {
+
+        }
+
+        if (Input.GetKeyDown(KeyCode.Alpha4))
+        {
+
+        }
     }
 
     public override void OnActionReceived(ActionBuffers actions)
