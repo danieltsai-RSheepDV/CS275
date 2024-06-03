@@ -16,6 +16,7 @@ public class LizardAgent : Agent
 
 
     [SerializeField] Transform targetObject;
+    [SerializeField] Transform mainBody;
 
     // Things to test for training
     Vector3 previousPosition = Vector3.zero;
@@ -44,7 +45,7 @@ public class LizardAgent : Agent
             childTransforms[i] = joints[i].transform;
         }
         
-        previousPosition = transform.position;
+        previousPosition = mainBody.position;
         if (targetObject)
         {
             previousDistance = Vector3.Distance(transform.position, targetObject.position);
@@ -54,6 +55,11 @@ public class LizardAgent : Agent
     public override void OnEpisodeBegin()
     {
         base.OnEpisodeBegin();
+
+        // Move the agent back to starting position
+
+        mainBody.position = transform.position;
+        mainBody.rotation = transform.rotation;
     }
 
     public override void CollectObservations(VectorSensor sensor)
@@ -61,6 +67,11 @@ public class LizardAgent : Agent
         base.CollectObservations(sensor);
 
         // AddObservation takes int, float, Vector3, Quaternion
+
+        // Pelvis (position + rotation) + 12 joints, each 1 float (activation) + 3 floats (position) + 4 floats (rotation) = 105 state size
+
+        sensor.AddObservation(mainBody.position);
+        sensor.AddObservation(mainBody.rotation);
 
         foreach(float act in activationStates)
         {
@@ -122,6 +133,23 @@ public class LizardAgent : Agent
 
         // float[] muscleActuations = actions.ContinuousActions.Array;  // Can just feed directly into output, this is just easier visually
 
+        // 8 joints with 4 muscles, 4 joints with 1 muscle, totalling 36
+        int actioniter = 0;
+        try
+        {
+            for (int i = 0; i < joints.Length; i++)
+            {
+                for (int j = 0; j < joints[i].Length; j++)
+                {
+                    joints[i][j] = actions.ContinuousActions[actioniter];
+                    actioniter++;
+                }
+            }
+        } catch
+        {
+            Debug.LogWarning("Action space mismatch occurrred at index: " + actioniter);
+        }
+
         /*
         if (springJoints.Length != actions.ContinuousActions.Length)
         {
@@ -135,8 +163,8 @@ public class LizardAgent : Agent
         }
         */
 
-        AddReward(transform.position.z - previousPosition.z);  // use to train one dimensional movement 
-        previousPosition = transform.position;
+        AddReward(mainBody.position.z - previousPosition.z);  // use to train one dimensional movement 
+        previousPosition = mainBody.position;
 
         // Target navigation
         //float curDist = Vector3.Distance(transform.position, targetObject.position);
