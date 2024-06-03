@@ -14,7 +14,6 @@ public class MuscledJoint : MonoBehaviour
         {
             muscleActivations[key] = value;
             muscles[key].spring = value * neutralK * 2;
-            Debug.Log("test");
         }
     }
     public int Length
