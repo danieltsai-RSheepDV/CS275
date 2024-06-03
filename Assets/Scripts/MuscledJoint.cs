@@ -16,6 +16,10 @@ public class MuscledJoint : MonoBehaviour
             muscles[key].spring = value * neutralK * 2;
         }
     }
+    public int Length
+    {
+        get { return numMuscles; }
+    }
     
     // Start is called before the first frame update
     void Start()

@@ -7,8 +7,13 @@ using UnityEngine;
 
 public class LizardAgent : Agent
 {
-    [SerializeField] SpringJoint[] springJoints;
-    float[] originalMaxLengths;
+    // [SerializeField] SpringJoint[] springJoints;
+    [SerializeField] MuscledJoint[] joints;
+    // float[] originalMaxLengths;
+
+    float[] activationStates;
+    [SerializeField] [Tooltip("Transforms of all bones influenced by muscles")] Transform[] childTransforms;  
+
 
     [SerializeField] Transform targetObject;
 
@@ -24,12 +29,21 @@ public class LizardAgent : Agent
 
     public override void Initialize()
     {
+        /*
         originalMaxLengths = new float[springJoints.Length];
         for (int i = 0; i < springJoints.Length; i++)
         {
             originalMaxLengths[i] = springJoints[i].maxDistance;
         }
+        */
 
+        joints = GetComponentsInChildren<MuscledJoint>();
+        childTransforms = new Transform[joints.Length];
+        for (int i = 0; i < childTransforms.Length; i++)
+        {
+            childTransforms[i] = joints[i].transform;
+        }
+        
         previousPosition = transform.position;
         if (targetObject)
         {
@@ -46,15 +60,18 @@ public class LizardAgent : Agent
     {
         base.CollectObservations(sensor);
 
-        sensor.AddObservation(transform.position.x);
-        sensor.AddObservation(transform.position.y);
-        sensor.AddObservation(transform.position.z);
-        sensor.AddObservation(transform.forward.x);
-        sensor.AddObservation(transform.forward.y);
-        sensor.AddObservation(transform.forward.z);
-        sensor.AddObservation(transform.up.x);
-        sensor.AddObservation(transform.up.y);
-        sensor.AddObservation(transform.up.z);
+        // AddObservation takes int, float, Vector3, Quaternion
+
+        foreach(float act in activationStates)
+        {
+            sensor.AddObservation(act); 
+        }
+
+        foreach(Transform trfm in childTransforms)
+        {
+            sensor.AddObservation(trfm.position);
+            sensor.AddObservation(trfm.rotation);
+        }
     }
 
     public override void Heuristic(in ActionBuffers actionsOut)
@@ -105,6 +122,7 @@ public class LizardAgent : Agent
 
         // float[] muscleActuations = actions.ContinuousActions.Array;  // Can just feed directly into output, this is just easier visually
 
+        /*
         if (springJoints.Length != actions.ContinuousActions.Length)
         {
 
@@ -115,7 +133,7 @@ public class LizardAgent : Agent
                 springJoints[i].maxDistance = originalMaxLengths[i] * actions.ContinuousActions[i];
             }
         }
-
+        */
 
         AddReward(transform.position.z - previousPosition.z);  // use to train one dimensional movement 
         previousPosition = transform.position;
