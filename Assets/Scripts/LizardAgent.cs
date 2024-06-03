@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.MLAgents;
@@ -17,6 +18,7 @@ public class LizardAgent : Agent
 
     [SerializeField] Transform targetObject;
     [SerializeField] Transform mainBody;
+    [SerializeField] Transform centerSpine;
 
     // Things to test for training
     Vector3 previousPosition = Vector3.zero;
@@ -45,12 +47,16 @@ public class LizardAgent : Agent
             childTransforms[i] = joints[i].transform;
         }
         
-        previousPosition = mainBody.position;
-        if (targetObject)
-        {
-            previousDistance = Vector3.Distance(transform.position, targetObject.position);
-        }
+        previousPosition = centerSpine.position;
+        // if (targetObject)
+        // {
+        //     previousDistance = Vector3.Distance(transform.position, targetObject.position);
+        // }
     }
+
+    private float minimumDistance = -1f;
+    private float totalDistanceTravelled = 0f;
+    [SerializeField] private bool printDistance = false;
 
     public override void OnEpisodeBegin()
     {
@@ -60,6 +66,11 @@ public class LizardAgent : Agent
 
         mainBody.position = transform.position;
         mainBody.rotation = transform.rotation;
+        
+        previousPosition = centerSpine.position;
+        if(printDistance) Debug.Log(totalDistanceTravelled);
+        minimumDistance = -0.5f;
+        totalDistanceTravelled = 0f;
     }
 
     public override void CollectObservations(VectorSensor sensor)
@@ -70,12 +81,15 @@ public class LizardAgent : Agent
 
         // Pelvis (position + rotation) + 12 joints, each 1 float (activation) + 3 floats (position) + 4 floats (rotation) = 105 state size
 
-        sensor.AddObservation(mainBody.position);
-        sensor.AddObservation(mainBody.rotation);
+        sensor.AddObservation(centerSpine.position);
+        sensor.AddObservation(centerSpine.rotation);
 
-        foreach(float act in activationStates)
+        for (int i = 0; i < joints.Length; i++)
         {
-            sensor.AddObservation(act); 
+            for (int j = 0; j < joints[i].Length; j++)
+            {
+                sensor.AddObservation(joints[i][j]);
+            }
         }
 
         foreach(Transform trfm in childTransforms)
@@ -88,6 +102,8 @@ public class LizardAgent : Agent
     public override void Heuristic(in ActionBuffers actionsOut)
     {
         base.Heuristic(actionsOut);
+        
+        Debug.Log("running");
 
         var outputmuscles = actionsOut.ContinuousActions;
 
@@ -163,8 +179,16 @@ public class LizardAgent : Agent
         }
         */
 
-        AddReward(mainBody.position.z - previousPosition.z);  // use to train one dimensional movement 
-        previousPosition = mainBody.position;
+        AddReward(centerSpine.position.x - previousPosition.x);  // use to train one dimensional movement 
+        totalDistanceTravelled += centerSpine.position.x - previousPosition.x;
+        minimumDistance += 0.002f;
+        // AddReward(0.001f);
+        if(totalDistanceTravelled < minimumDistance || Math.Abs(transform.position.z - centerSpine.position.z) > 0.5 || Math.Abs(transform.position.z - mainBody.position.z) > 0.5){
+            AddReward(-100);
+            EndEpisode();
+        }
+        previousPosition = centerSpine.position;
+        
 
         // Target navigation
         //float curDist = Vector3.Distance(transform.position, targetObject.position);

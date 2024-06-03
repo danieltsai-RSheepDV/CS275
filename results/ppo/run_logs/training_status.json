@@ -1,0 +1,38 @@
+{
+    "Lizard": {
+        "checkpoints": [
+            {
+                "steps": 186690,
+                "file_path": "results\\ppo\\Lizard\\Lizard-186690.onnx",
+                "reward": -99.86792274757669,
+                "creation_time": 1717451229.9903116,
+                "auxillary_file_paths": [
+                    "results\\ppo\\Lizard\\Lizard-186690.pt"
+                ]
+            },
+            {
+                "steps": 449029,
+                "file_path": "results\\ppo\\Lizard\\Lizard-449029.onnx",
+                "reward": -99.73646103845884,
+                "creation_time": 1717451630.1624687,
+                "auxillary_file_paths": [
+                    "results\\ppo\\Lizard\\Lizard-449029.pt"
+                ]
+            }
+        ],
+        "final_checkpoint": {
+            "steps": 449029,
+            "file_path": "results\\ppo\\Lizard.onnx",
+            "reward": -99.73646103845884,
+            "creation_time": 1717451630.1624687,
+            "auxillary_file_paths": [
+                "results\\ppo\\Lizard\\Lizard-449029.pt"
+            ]
+        }
+    },
+    "metadata": {
+        "stats_format_version": "0.3.0",
+        "mlagents_version": "1.0.0",
+        "torch_version": "2.2.2+cu121"
+    }
+}

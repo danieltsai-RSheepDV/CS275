@@ -1,0 +1,65 @@
+{
+    "Lizard": {
+        "checkpoints": [
+            {
+                "steps": 12716475,
+                "file_path": "results\\ppo\\Lizard\\Lizard-12716475.onnx",
+                "reward": null,
+                "creation_time": 1717446498.5416703,
+                "auxillary_file_paths": [
+                    "results\\ppo\\Lizard\\Lizard-12716475.pt"
+                ]
+            },
+            {
+                "steps": 12752326,
+                "file_path": "results\\ppo\\Lizard\\Lizard-12752326.onnx",
+                "reward": -99.6808896996509,
+                "creation_time": 1717446871.0382419,
+                "auxillary_file_paths": [
+                    "results\\ppo\\Lizard\\Lizard-12752326.pt"
+                ]
+            },
+            {
+                "steps": 14673549,
+                "file_path": "results\\ppo\\Lizard\\Lizard-14673549.onnx",
+                "reward": -97.60498889287312,
+                "creation_time": 1717449318.4589307,
+                "auxillary_file_paths": [
+                    "results\\ppo\\Lizard\\Lizard-14673549.pt"
+                ]
+            },
+            {
+                "steps": 15353533,
+                "file_path": "results\\ppo\\Lizard\\Lizard-15353533.onnx",
+                "reward": null,
+                "creation_time": 1717450196.2913752,
+                "auxillary_file_paths": [
+                    "results\\ppo\\Lizard\\Lizard-15353533.pt"
+                ]
+            },
+            {
+                "steps": 15398064,
+                "file_path": "results\\ppo\\Lizard\\Lizard-15398064.onnx",
+                "reward": -98.9368144444057,
+                "creation_time": 1717450976.2123413,
+                "auxillary_file_paths": [
+                    "results\\ppo\\Lizard\\Lizard-15398064.pt"
+                ]
+            }
+        ],
+        "final_checkpoint": {
+            "steps": 15398064,
+            "file_path": "results\\ppo\\Lizard.onnx",
+            "reward": -98.9368144444057,
+            "creation_time": 1717450976.2123413,
+            "auxillary_file_paths": [
+                "results\\ppo\\Lizard\\Lizard-15398064.pt"
+            ]
+        }
+    },
+    "metadata": {
+        "stats_format_version": "0.3.0",
+        "mlagents_version": "1.0.0",
+        "torch_version": "2.2.2+cu121"
+    }
+}

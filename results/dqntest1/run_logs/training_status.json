@@ -1,0 +1,29 @@
+{
+    "Lizard": {
+        "checkpoints": [
+            {
+                "steps": 204288,
+                "file_path": "results\\dqntest1\\Lizard\\Lizard-204288.onnx",
+                "reward": 1.2393842140833538,
+                "creation_time": 1717412250.508289,
+                "auxillary_file_paths": [
+                    "results\\dqntest1\\Lizard\\Lizard-204288.pt"
+                ]
+            }
+        ],
+        "final_checkpoint": {
+            "steps": 204288,
+            "file_path": "results\\dqntest1\\Lizard.onnx",
+            "reward": 1.2393842140833538,
+            "creation_time": 1717412250.508289,
+            "auxillary_file_paths": [
+                "results\\dqntest1\\Lizard\\Lizard-204288.pt"
+            ]
+        }
+    },
+    "metadata": {
+        "stats_format_version": "0.3.0",
+        "mlagents_version": "1.0.0",
+        "torch_version": "2.2.2+cu121"
+    }
+}
