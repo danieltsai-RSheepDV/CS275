@@ -141,7 +141,7 @@ public class LizardAgent : Agent
             {
                 for (int j = 0; j < joints[i].Length; j++)
                 {
-                    joints[i][j] = actions.ContinuousActions[actioniter];
+                    joints[i][j] = Mathf.Clamp01(actions.ContinuousActions[actioniter]);
                     actioniter++;
                 }
             }
