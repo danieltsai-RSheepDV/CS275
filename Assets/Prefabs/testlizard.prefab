@@ -4537,8 +4537,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8371369061857256021}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.5, y: 0.5000001, z: 0.5000001, w: -0.4999999}
-  m_LocalPosition: {x: 0.00000052485836, y: 0.00000055318395, z: -3.47598}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 0.99999994, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -4664,6 +4664,7 @@ GameObject:
   - component: {fileID: 6004981969147432151}
   - component: {fileID: 3547810430443280975}
   - component: {fileID: 3455604542583191231}
+  - component: {fileID: 5565309717424967380}
   m_Layer: 3
   m_Name: testlizard
   m_TagString: Untagged
@@ -4703,12 +4704,24 @@ MonoBehaviour:
   agentParameters:
     maxStep: 0
   hasUpgradedFromAgentParameters: 1
-  MaxStep: 0
-  joints: []
+  MaxStep: 10000
+  joints:
+  - {fileID: 2738601763825933769}
+  - {fileID: 6142778522321252938}
+  - {fileID: 5424738238561970350}
+  - {fileID: 1253249553195375652}
+  - {fileID: 6747170811801341453}
+  - {fileID: 994813525166747512}
+  - {fileID: 7617821138914604822}
+  - {fileID: 5562834466324802100}
+  - {fileID: 91154676602027704}
+  - {fileID: 545542524367482830}
+  - {fileID: 1563810173947555126}
+  - {fileID: 5336535196140558075}
   childTransforms: []
   targetObject: {fileID: 0}
-  mainBody: {fileID: 0}
-  centerSpine: {fileID: 0}
+  mainBody: {fileID: 1492553512871364741}
+  centerSpine: {fileID: 3658895991242362491}
   printDistance: 0
 --- !u!114 &6004981969147432151
 MonoBehaviour:
@@ -4723,7 +4736,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_BrainParameters:
-    VectorObservationSize: 105
+    VectorObservationSize: 124
     NumStackedVectorObservations: 1
     m_ActionSpec:
       m_NumContinuousActions: 36
@@ -4804,3 +4817,17 @@ MonoBehaviour:
   - {fileID: 720886749521857182}
   - {fileID: 2001782788103721221}
   - {fileID: 2827569821637429584}
+--- !u!114 &5565309717424967380
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9181622754143690962}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3a5c9d521e5ef4759a8246a07d52221e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  DecisionPeriod: 5
+  TakeActionsBetweenDecisions: 1

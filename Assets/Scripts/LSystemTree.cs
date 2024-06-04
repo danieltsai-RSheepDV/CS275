@@ -121,7 +121,9 @@ public class LSystemTree : MonoBehaviour
     public GameObject createBranch(float scale, Vector3 position, Quaternion rotation)
     {
         float branchScaleFactor = scale * branchStartingLength;
-        GameObject branch = Instantiate(branchPrefab, position, rotation);
+        GameObject branch = Instantiate(branchPrefab, transform.parent);
+        branch.transform.position = position;
+        branch.transform.rotation = rotation; 
         branch.transform.localScale = new Vector3(branch.transform.localScale.x, branchScaleFactor, branch.transform.localScale.z);
 
         return branch;
@@ -187,6 +189,7 @@ public class LSystemTree : MonoBehaviour
 
             }
         }
+        
         
     }
 }

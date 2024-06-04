@@ -2,31 +2,40 @@
     "Lizard": {
         "checkpoints": [
             {
-                "steps": 186690,
-                "file_path": "results\\ppo\\Lizard\\Lizard-186690.onnx",
-                "reward": -99.86792274757669,
-                "creation_time": 1717451229.9903116,
+                "steps": 3005255,
+                "file_path": "results\\ppo\\Lizard\\Lizard-3005255.onnx",
+                "reward": null,
+                "creation_time": 1717459693.6175141,
                 "auxillary_file_paths": [
-                    "results\\ppo\\Lizard\\Lizard-186690.pt"
+                    "results\\ppo\\Lizard\\Lizard-3005255.pt"
                 ]
             },
             {
-                "steps": 449029,
-                "file_path": "results\\ppo\\Lizard\\Lizard-449029.onnx",
-                "reward": -99.73646103845884,
-                "creation_time": 1717451630.1624687,
+                "steps": 7733588,
+                "file_path": "results\\ppo\\Lizard\\Lizard-7733588.onnx",
+                "reward": null,
+                "creation_time": 1717462653.262959,
                 "auxillary_file_paths": [
-                    "results\\ppo\\Lizard\\Lizard-449029.pt"
+                    "results\\ppo\\Lizard\\Lizard-7733588.pt"
+                ]
+            },
+            {
+                "steps": 10196893,
+                "file_path": "results\\ppo\\Lizard\\Lizard-10196893.onnx",
+                "reward": -76.30073317885399,
+                "creation_time": 1717464191.6427429,
+                "auxillary_file_paths": [
+                    "results\\ppo\\Lizard\\Lizard-10196893.pt"
                 ]
             }
         ],
         "final_checkpoint": {
-            "steps": 449029,
+            "steps": 10196893,
             "file_path": "results\\ppo\\Lizard.onnx",
-            "reward": -99.73646103845884,
-            "creation_time": 1717451630.1624687,
+            "reward": -76.30073317885399,
+            "creation_time": 1717464191.6427429,
             "auxillary_file_paths": [
-                "results\\ppo\\Lizard\\Lizard-449029.pt"
+                "results\\ppo\\Lizard\\Lizard-10196893.pt"
             ]
         }
     },

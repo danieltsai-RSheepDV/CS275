@@ -81,7 +81,7 @@ public class LizardAgent : Agent
 
         // Pelvis (position + rotation) + 12 joints, each 1 float (activation) + 3 floats (position) + 4 floats (rotation) = 105 state size
 
-        sensor.AddObservation(centerSpine.position);
+        // sensor.AddObservation(centerSpine.position);
         sensor.AddObservation(centerSpine.rotation);
 
         for (int i = 0; i < joints.Length; i++)
@@ -94,8 +94,8 @@ public class LizardAgent : Agent
 
         foreach(Transform trfm in childTransforms)
         {
-            sensor.AddObservation(trfm.position);
-            sensor.AddObservation(trfm.rotation);
+            sensor.AddObservation(trfm.localPosition);
+            sensor.AddObservation(trfm.localRotation);
         }
     }
 
@@ -179,11 +179,13 @@ public class LizardAgent : Agent
         }
         */
 
-        AddReward(centerSpine.position.x - previousPosition.x);  // use to train one dimensional movement 
+        float xDiff = centerSpine.position.x - previousPosition.x;
+        AddReward(xDiff + 10 * xDiff * xDiff);  // use to train one dimensional movement 
         totalDistanceTravelled += centerSpine.position.x - previousPosition.x;
-        minimumDistance += 0.002f;
+        minimumDistance += 0.0015f;
         // AddReward(0.001f);
         if(totalDistanceTravelled < minimumDistance || Math.Abs(transform.position.z - centerSpine.position.z) > 0.5 || Math.Abs(transform.position.z - mainBody.position.z) > 0.5){
+            AddReward(5f * Mathf.Floor(totalDistanceTravelled));
             AddReward(-100);
             EndEpisode();
         }
