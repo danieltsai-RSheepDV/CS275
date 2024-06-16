@@ -2,40 +2,22 @@
     "Lizard": {
         "checkpoints": [
             {
-                "steps": 3005255,
-                "file_path": "results\\ppo\\Lizard\\Lizard-3005255.onnx",
-                "reward": null,
-                "creation_time": 1717459693.6175141,
+                "steps": 35586419,
+                "file_path": "results\\ppo\\Lizard\\Lizard-35586419.onnx",
+                "reward": -261.9424137234688,
+                "creation_time": 1717526443.6576715,
                 "auxillary_file_paths": [
-                    "results\\ppo\\Lizard\\Lizard-3005255.pt"
-                ]
-            },
-            {
-                "steps": 7733588,
-                "file_path": "results\\ppo\\Lizard\\Lizard-7733588.onnx",
-                "reward": null,
-                "creation_time": 1717462653.262959,
-                "auxillary_file_paths": [
-                    "results\\ppo\\Lizard\\Lizard-7733588.pt"
-                ]
-            },
-            {
-                "steps": 10196893,
-                "file_path": "results\\ppo\\Lizard\\Lizard-10196893.onnx",
-                "reward": -76.30073317885399,
-                "creation_time": 1717464191.6427429,
-                "auxillary_file_paths": [
-                    "results\\ppo\\Lizard\\Lizard-10196893.pt"
+                    "results\\ppo\\Lizard\\Lizard-35586419.pt"
                 ]
             }
         ],
         "final_checkpoint": {
-            "steps": 10196893,
+            "steps": 35586419,
             "file_path": "results\\ppo\\Lizard.onnx",
-            "reward": -76.30073317885399,
-            "creation_time": 1717464191.6427429,
+            "reward": -261.9424137234688,
+            "creation_time": 1717526443.6576715,
             "auxillary_file_paths": [
-                "results\\ppo\\Lizard\\Lizard-10196893.pt"
+                "results\\ppo\\Lizard\\Lizard-35586419.pt"
             ]
         }
     },

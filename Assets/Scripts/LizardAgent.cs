@@ -8,12 +8,21 @@ using UnityEngine;
 
 public class LizardAgent : Agent
 {
-    // [SerializeField] SpringJoint[] springJoints;
+    private const float CPGWeight = 0.1f;
+    private const float forwardWeight = 1f;
+    private const float speedWeight = 2f;
+    private const float bodyHeightWeight = 0.01f;
+    private const float antiVeerWeight = 0.8f;
+    private const float livenessWeight = 1f;
+    private const float livenessDecay = 0.001f;
+    private const float veerRange = 0.7f;
+    private const float bodyVeerWeight = 0.05f;
+    
     [SerializeField] MuscledJoint[] joints;
-    // float[] originalMaxLengths;
+    [SerializeField] private TouchDetection[] contactPoints;
 
     float[] activationStates;
-    [SerializeField] [Tooltip("Transforms of all bones influenced by muscles")] Transform[] childTransforms;  
+    Transform[] childTransforms;  
 
 
     [SerializeField] Transform targetObject;
@@ -56,6 +65,7 @@ public class LizardAgent : Agent
 
     private float minimumDistance = -1f;
     private float totalDistanceTravelled = 0f;
+    private float livenessDecayValue = 1f;
     [SerializeField] private bool printDistance = false;
 
     public override void OnEpisodeBegin()
@@ -71,6 +81,7 @@ public class LizardAgent : Agent
         if(printDistance) Debug.Log(totalDistanceTravelled);
         minimumDistance = -0.5f;
         totalDistanceTravelled = 0f;
+        livenessDecayValue = 1f;
     }
 
     public override void CollectObservations(VectorSensor sensor)
@@ -81,7 +92,12 @@ public class LizardAgent : Agent
 
         // Pelvis (position + rotation) + 12 joints, each 1 float (activation) + 3 floats (position) + 4 floats (rotation) = 105 state size
 
-        // sensor.AddObservation(centerSpine.position);
+        foreach (var contactPoint in contactPoints)
+        {
+            sensor.AddObservation(contactPoint.isTouching);
+        }
+        
+        sensor.AddObservation(centerSpine.position);
         sensor.AddObservation(centerSpine.rotation);
 
         for (int i = 0; i < joints.Length; i++)
@@ -151,12 +167,14 @@ public class LizardAgent : Agent
 
         // 8 joints with 4 muscles, 4 joints with 1 muscle, totalling 36
         int actioniter = 0;
+        float CGPReward = 0;
         try
         {
             for (int i = 0; i < joints.Length; i++)
             {
                 for (int j = 0; j < joints[i].Length; j++)
                 {
+                    CGPReward += Mathf.Abs(Mathf.Clamp01(actions.ContinuousActions[actioniter]) - joints[i][j]);
                     joints[i][j] = Mathf.Clamp01(actions.ContinuousActions[actioniter]);
                     actioniter++;
                 }
@@ -165,30 +183,36 @@ public class LizardAgent : Agent
         {
             Debug.LogWarning("Action space mismatch occurrred at index: " + actioniter);
         }
-
-        /*
-        if (springJoints.Length != actions.ContinuousActions.Length)
-        {
-
-        } else
-        {
-            for (int i = springJoints.Length - 1; i >= 0; i--)
-            {
-                springJoints[i].maxDistance = originalMaxLengths[i] * actions.ContinuousActions[i];
-            }
-        }
-        */
-
+        
+        //CGP Reward
+        AddReward(CGPReward/actioniter * CPGWeight);
+        
+        //Movement Reward
         float xDiff = centerSpine.position.x - previousPosition.x;
-        AddReward(xDiff + 10 * xDiff * xDiff);  // use to train one dimensional movement 
+        AddReward(xDiff * forwardWeight);  // use to train one dimensional movement 
+        //Speed Reward
+        float speedDiff = xDiff * xDiff;
+        AddReward(speedDiff * speedWeight);
+        
+        // Liveness Reward
+        AddReward(0.01f * livenessWeight * livenessDecayValue);
+        livenessDecayValue *= (1 - livenessDecay);
         totalDistanceTravelled += centerSpine.position.x - previousPosition.x;
-        minimumDistance += 0.0015f;
-        // AddReward(0.001f);
-        if(totalDistanceTravelled < minimumDistance || Math.Abs(transform.position.z - centerSpine.position.z) > 0.5 || Math.Abs(transform.position.z - mainBody.position.z) > 0.5){
-            AddReward(5f * Mathf.Floor(totalDistanceTravelled));
+        minimumDistance += 0.001f;
+        if(totalDistanceTravelled < minimumDistance || Math.Abs(transform.position.z - centerSpine.position.z) > veerRange || Math.Abs(transform.position.z - mainBody.position.z) > veerRange){
             AddReward(-100);
             EndEpisode();
         }
+        
+        // Veer Punishment
+        AddReward(-Math.Abs(transform.position.z - centerSpine.position.z) * antiVeerWeight);
+        
+        // Body Height Weight
+        AddReward((centerSpine.position.y + mainBody.position.y) * bodyHeightWeight);
+        
+        // Body Veer Weight
+        AddReward(-Math.Abs(mainBody.position.z - centerSpine.position.z) * bodyVeerWeight);
+        
         previousPosition = centerSpine.position;
         
 
