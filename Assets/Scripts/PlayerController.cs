@@ -104,7 +104,7 @@ public class PlayerController : MonoBehaviour
             tongueBody.forward = (tongueTip.position - transform.position).normalized;
             yield return new WaitForFixedUpdate();
         }
-        tongueTip.GetComponent<Tongue>().ClearCaught();
+        tongueTip.GetComponent<Tongue>().ClearCaught();  // This returns number of entities caught
         tongueReady = true;
     }
 

@@ -18,13 +18,15 @@ public class Tongue : MonoBehaviour
         
     }
 
-    public void ClearCaught()
+    public int ClearCaught()
     {
         foreach (GameObject thing in caught)
         {
             Destroy(thing);
         }
+        int tot = caught.Count;
         caught.Clear();
+        return tot;
     }
 
     private void OnTriggerEnter(Collider other)
