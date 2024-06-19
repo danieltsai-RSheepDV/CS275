@@ -4903,7 +4903,7 @@ GameObject:
   - component: {fileID: 5565309717424967380}
   m_Layer: 3
   m_Name: testlizard
-  m_TagString: Untagged
+  m_TagString: Predator
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

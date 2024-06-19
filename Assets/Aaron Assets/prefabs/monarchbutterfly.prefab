@@ -11,32 +11,32 @@ PrefabInstance:
     - target: {fileID: 984130040017825099, guid: 16a625154688d4fceb847b7da6a14533,
         type: 3}
       propertyPath: m_Name
-      value: orangebutterfly Variant
+      value: monarchbutterfly
       objectReference: {fileID: 0}
     - target: {fileID: 1359783821335704358, guid: 16a625154688d4fceb847b7da6a14533,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -27.36
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1359783821335704358, guid: 16a625154688d4fceb847b7da6a14533,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.901
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1359783821335704358, guid: 16a625154688d4fceb847b7da6a14533,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 12.3662
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1359783821335704358, guid: 16a625154688d4fceb847b7da6a14533,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.7071068
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1359783821335704358, guid: 16a625154688d4fceb847b7da6a14533,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0.7071068
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1359783821335704358, guid: 16a625154688d4fceb847b7da6a14533,
         type: 3}
@@ -46,7 +46,7 @@ PrefabInstance:
     - target: {fileID: 1359783821335704358, guid: 16a625154688d4fceb847b7da6a14533,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1359783821335704358, guid: 16a625154688d4fceb847b7da6a14533,
         type: 3}
