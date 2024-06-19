@@ -19,10 +19,11 @@ public class LSystemTree : MonoBehaviour
     //no spaces next to equal sign
     [SerializeField] private string[] expressionStrings;
     [SerializeField] private Material[] materials;
+    [SerializeField] private Transform parentTransform;
     public Dictionary<string, string> expressions = new Dictionary<string, string>();
     public GameObject branchPrefab;
     public int numIterations;
-    
+    private Transform tempParent;
     public float RotateAngle;
     public int branchStartingLength;
     public int branchStartingwidth;
@@ -30,8 +31,11 @@ public class LSystemTree : MonoBehaviour
     private string generatedGrammar;
     private List<string> parsedGrammar;
 
+    private List<Transform> branches;
+
     void Awake()
     {
+        branches = new List<Transform>();
         if (expressionStrings.Length == 0)
         {
             Debug.Log("enter expressions");
@@ -121,20 +125,25 @@ public class LSystemTree : MonoBehaviour
     public GameObject createBranch(float scale, Vector3 position, Quaternion rotation)
     {
         float branchScaleFactor = scale * branchStartingLength;
-        GameObject branch = Instantiate(branchPrefab, transform.parent);
-        branch.transform.position = position;
-        branch.transform.rotation = rotation; 
+        GameObject branch = Instantiate(branchPrefab) as GameObject;
+        // branch.transform.parent = parentTransform;
+        branch.transform.localPosition = position;
+        branch.transform.localRotation = rotation;
         branch.transform.localScale = new Vector3(branch.transform.localScale.x, branchScaleFactor, branch.transform.localScale.z);
-
+        branches.Add(branch.transform);
         return branch;
     }
     void Start()
     {
         Stack<GameObject> branchStack = new Stack<GameObject>();
         int depth = 0;
-        GameObject obj = createBranch(1, Vector3.zero, Quaternion.identity);
         Vector3 currPosition = Vector3.zero;
         Quaternion currRotation = Quaternion.identity;
+        GameObject obj = Instantiate(branchPrefab) as GameObject;
+        obj.transform.parent = parentTransform;
+        obj.transform.localPosition = currPosition;
+        obj.transform.localRotation = currRotation;
+        obj.transform.localScale = new Vector3(obj.transform.localScale.x, branchStartingLength, obj.transform.localScale.z);
         float scale = 1f;
         int level = 1;
 
@@ -186,10 +195,12 @@ public class LSystemTree : MonoBehaviour
                 Quaternion additionalRotationQuat = Quaternion.Euler(xangle, yangle, zangle);
                 currRotation *= additionalRotationQuat;
                 obj = createBranch(scale, currPosition, currRotation);
-
             }
         }
-        
-        
+
+        foreach (var trfm in branches)
+        {
+            trfm.parent = parentTransform;
+        }
     }
 }
