@@ -13,7 +13,13 @@ public class SwarmController : MonoBehaviour
     public float boidSteeringSpeed = 100f;
     public float boidNoClumpingArea = 2f;
     public float boidLocalArea = 10f;
-    public float boidSimulationArea = 50f;
+    // public float boidSimulationArea = 50f;
+    public float boidLowX = -27f;
+    // public float boidLowY = 50f;
+    public float boidLowZ = -73f;
+    public float boidHiX = 47f;
+    // public float boidHiY = 50f;
+    public float boidHiZ = 24f;
 
     public int numberOfRays = 36;
 
@@ -49,20 +55,20 @@ public class SwarmController : MonoBehaviour
 
             var boidPos = boid.transform.position;
 
-            if (boidPos.x > boidSimulationArea)
-                boidPos.x -= boidSimulationArea * 2;
-            else if (boidPos.x < -boidSimulationArea)
-                boidPos.x += boidSimulationArea * 2;
+            if (boidPos.x > boidHiX)
+                boidPos.x = boidLowX;
+            else if (boidPos.x < boidLowX)
+                boidPos.x = boidHiX;
 
-            if (boidPos.y > boidSimulationArea)
-                boidPos.y -= boidSimulationArea * 2;
-            else if (boidPos.y < -boidSimulationArea)
-                boidPos.y += boidSimulationArea * 2;
+            // if (boidPos.y > boidSimulationArea)
+            //     boidPos.y -= boidSimulationArea * 2;
+            // else if (boidPos.y < -boidSimulationArea)
+            //     boidPos.y += boidSimulationArea * 2;
 
-            if (boidPos.z > boidSimulationArea)
-                boidPos.z -= boidSimulationArea * 2;
-            else if (boidPos.z < -boidSimulationArea)
-                boidPos.z += boidSimulationArea * 2;
+            if (boidPos.z > boidHiZ)
+                boidPos.z = boidLowZ;
+            else if (boidPos.z < boidLowZ)
+                boidPos.z = boidHiZ;
 
             boid.transform.position = boidPos;
         }
@@ -73,7 +79,7 @@ public class SwarmController : MonoBehaviour
     {
         var boidInstance = Instantiate(prefab);
 
-        boidInstance.transform.localPosition += new Vector3(Random.Range(-10, 10), Random.Range(-10, 10), Random.Range(-10, 10));
+        boidInstance.transform.localPosition += new Vector3(Random.Range(boidLowX, boidHiX), Random.Range(5, 30), Random.Range(boidLowZ, boidHiZ));
         boidInstance.transform.localRotation = Quaternion.Euler(Random.Range(0, 360), Random.Range(0, 360), Random.Range(0, 360));
 
         var boidController = boidInstance.GetComponent<ButterflyController>();
@@ -83,6 +89,8 @@ public class SwarmController : MonoBehaviour
         boidController.LocalAreaRadius = boidLocalArea;
         boidController.NoClumpingRadius = boidNoClumpingArea;
         boidController.NumberOfRays = numberOfRays;
+        float yValue = -15 + 25 * swarmIndex;
+        boidController.targetPoint = new Vector3((boidLowX + boidHiX) / 2, yValue, (boidLowZ + boidHiZ) / 2);
 
         _boids.Add(boidController);
     }

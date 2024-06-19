@@ -566,17 +566,17 @@ PrefabInstance:
     - target: {fileID: 5994461509740087972, guid: 60e6cf54ef07d4ed19ea3ee721fc5cb7,
         type: 3}
       propertyPath: m_LocalScale.x
-      value: 3
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5994461509740087972, guid: 60e6cf54ef07d4ed19ea3ee721fc5cb7,
         type: 3}
       propertyPath: m_LocalScale.y
-      value: 3
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5994461509740087972, guid: 60e6cf54ef07d4ed19ea3ee721fc5cb7,
         type: 3}
       propertyPath: m_LocalScale.z
-      value: 3
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5994461509740087972, guid: 60e6cf54ef07d4ed19ea3ee721fc5cb7,
         type: 3}
@@ -1202,7 +1202,7 @@ MonoBehaviour:
   hasUpgradedFromAgentParameters: 1
   MaxStep: 0
   joints: []
-  childTransforms: []
+  contactPoints: []
   targetObject: {fileID: 0}
   mainBody: {fileID: 0}
   centerSpine: {fileID: 0}
@@ -3851,17 +3851,17 @@ PrefabInstance:
     - target: {fileID: 1359783821335704358, guid: 16a625154688d4fceb847b7da6a14533,
         type: 3}
       propertyPath: m_LocalScale.x
-      value: 3
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1359783821335704358, guid: 16a625154688d4fceb847b7da6a14533,
         type: 3}
       propertyPath: m_LocalScale.y
-      value: 3
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1359783821335704358, guid: 16a625154688d4fceb847b7da6a14533,
         type: 3}
       propertyPath: m_LocalScale.z
-      value: 3
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1359783821335704358, guid: 16a625154688d4fceb847b7da6a14533,
         type: 3}

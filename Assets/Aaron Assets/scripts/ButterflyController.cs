@@ -11,6 +11,7 @@ public class ButterflyController : MonoBehaviour
     public float SteeringSpeed { get; set; }
     public int NumberOfRays { get; set; }
     public Transform RayOrigin;
+    public Vector3 targetPoint = Vector3.zero;
 
     public void SimulateMovement(List<ButterflyController> other, float time)
     {
@@ -95,6 +96,8 @@ public class ButterflyController : MonoBehaviour
         //     steering = ((hitInfo.point + hitInfo.normal) - transform.position).normalized;
         // }
 
+        steering += (targetPoint - transform.position).normalized;
+
         float goldenAngle = Mathf.PI * (3 - Mathf.Sqrt(5)); // Golden angle in radians
 
         for (int i = 0; i < NumberOfRays; i++)
@@ -110,15 +113,23 @@ public class ButterflyController : MonoBehaviour
             Vector3 rayDirection = new Vector3(x, y, z);
 
             RaycastHit hitInfo;
-            // Perform raycast
+            // Perform raycast avoidannce
             if (Physics.Raycast(RayOrigin.position, rayDirection, out hitInfo, LocalAreaRadius, LayerMask.GetMask("Default")))
             {
-                // Calculate avoidance force
-                Vector3 avoidDirection = (RayOrigin.position - hitInfo.point).normalized;
-                steering += avoidDirection;
+                if (hitInfo.collider.CompareTag("Predator"))
+                {
+                    // Strong avoidance force for predators
+                    Vector3 avoidDirection = (RayOrigin.position - hitInfo.point).normalized;
+                    steering += avoidDirection * 2;
+                }
+                else
+                {                    
+                    Vector3 avoidDirection = (RayOrigin.position - hitInfo.point).normalized;
+                    steering += avoidDirection;
+                }
 
                 // Draw hit point
-                Debug.DrawRay(RayOrigin.position, rayDirection * hitInfo.distance, Color.green);
+                // Debug.DrawRay(RayOrigin.position, rayDirection * hitInfo.distance, Color.green);
             }
             else
             {
