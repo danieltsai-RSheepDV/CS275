@@ -8,6 +8,13 @@ public class PlayerController : MonoBehaviour
     [SerializeField] float jumpThrust = 5f;
     [SerializeField] float groundDrag = 2f;
     bool isGrounded = false;
+
+    [SerializeField] Transform tongueTip;
+    [SerializeField] Transform tongueBody;
+    [SerializeField] float tongueSpeed = 5f;
+    [SerializeField] float maxTongueLength = 4f;
+    bool tongueReady = true;
+
     Rigidbody rb;
 
     // Start is called before the first frame update
@@ -24,6 +31,7 @@ public class PlayerController : MonoBehaviour
 
     void MovePlayer()
     {
+        /*
         if (Input.GetKey(KeyCode.W) && isGrounded)
         {
             rb.AddForce(Vector3.forward * acceleration);
@@ -43,11 +51,67 @@ public class PlayerController : MonoBehaviour
         {
             rb.AddForce(Vector3.right * acceleration);
         }
+        */
 
         if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
         {
             rb.AddForce(Vector3.up * jumpThrust, ForceMode.Impulse);
         }
+
+        if (Input.GetKeyDown(KeyCode.Mouse0))
+        {
+            LaunchTongue(Vector3.forward);
+        }
+    }
+
+    void LaunchTongue(Vector3 direction)
+    {
+        if (tongueReady)
+            StartCoroutine(ExtendTongue(direction));
+    }
+
+    IEnumerator ExtendTongue(Vector3 direction)
+    {
+        tongueReady = false;
+        // when extending, tongue should always start from the player
+        tongueTip.position = transform.position;
+
+        while (Vector3.Distance(tongueTip.position, transform.position) < maxTongueLength)
+        {
+            tongueTip.position += Time.fixedDeltaTime * tongueSpeed * direction;
+
+            tongueBody.position = transform.position + (tongueTip.position - transform.position) * 0.5f;
+            tongueBody.localScale = new Vector3(1f, 1f, Vector3.Distance(tongueTip.position, transform.position) * 0.5f);
+            tongueBody.forward = (tongueTip.position - transform.position).normalized;
+            yield return new WaitForFixedUpdate();
+        }
+        StartCoroutine(RetractTongue());
+    }
+
+    IEnumerator RetractTongue()
+    {
+        /*
+         * - Tongue position is halfway between tip and player
+         * - Tongue scale (z) is half the distance between tip and player
+         * - Tongue forward oriented with distance vector from player to tip 
+         */
+        while (Vector3.Distance(tongueTip.position, transform.position) > 0.2f)
+        {
+            tongueTip.position = Vector3.MoveTowards(tongueTip.position, transform.position, Time.fixedDeltaTime * tongueSpeed);
+
+            tongueBody.position = transform.position + (tongueTip.position - transform.position) * 0.5f;
+            tongueBody.localScale = new Vector3(1f, 1f, Vector3.Distance(tongueTip.position, transform.position) * 0.5f);
+            tongueBody.forward = (tongueTip.position - transform.position).normalized;
+            yield return new WaitForFixedUpdate();
+        }
+        tongueTip.GetComponent<Tongue>().ClearCaught();
+        tongueReady = true;
+    }
+
+    public void AccelerateGroundPlayer(Vector3 direc)
+    {
+        if (isGrounded)
+            rb.AddForce(direc * acceleration);
     }
 
     private void OnCollisionStay(Collision collision)

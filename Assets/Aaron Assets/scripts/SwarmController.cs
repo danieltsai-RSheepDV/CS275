@@ -43,6 +43,8 @@ public class SwarmController : MonoBehaviour
     {
         foreach (ButterflyController boid in _boids)
         {
+            if (boid == null) continue;
+
             boid.SimulateMovement(_boids, Time.deltaTime);
 
             var boidPos = boid.transform.position;

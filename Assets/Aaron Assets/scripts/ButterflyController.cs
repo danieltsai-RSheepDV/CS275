@@ -29,6 +29,7 @@ public class ButterflyController : MonoBehaviour
 
         foreach (ButterflyController boid in other)
         {
+            if (boid == null) continue;
             //skip self
             if (boid == this)
                 continue;
