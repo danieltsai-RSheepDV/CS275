@@ -67,18 +67,21 @@ public class PlayerController : MonoBehaviour
     void LaunchTongue(Vector3 direction)
     {
         if (tongueReady)
-            StartCoroutine(ExtendTongue(direction));
+        {
+            Vector3 dest = transform.position + direction * maxTongueLength;
+            StartCoroutine(ExtendTongue(dest));
+        }
     }
 
-    IEnumerator ExtendTongue(Vector3 direction)
+    IEnumerator ExtendTongue(Vector3 destination)
     {
         tongueReady = false;
         // when extending, tongue should always start from the player
         tongueTip.position = transform.position;
 
-        while (Vector3.Distance(tongueTip.position, transform.position) < maxTongueLength)
+        while (Vector3.Distance(tongueTip.position, destination) > 0.2f)
         {
-            tongueTip.position += Time.fixedDeltaTime * tongueSpeed * direction;
+            tongueTip.position = Vector3.MoveTowards(tongueTip.position, destination, Time.fixedDeltaTime * tongueSpeed);
 
             tongueBody.position = transform.position + (tongueTip.position - transform.position) * 0.5f;
             tongueBody.localScale = new Vector3(1f, 1f, Vector3.Distance(tongueTip.position, transform.position) * 0.5f);
