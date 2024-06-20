@@ -6,6 +6,7 @@ using System.Numerics;
 using System.Security.Cryptography.X509Certificates;
 using UnityEngine;
 using System.Text.RegularExpressions;
+using NUnit.Framework;
 using Unity.Mathematics;
 using UnityEditor.PackageManager.Requests;
 using Quaternion = UnityEngine.Quaternion;
@@ -20,22 +21,28 @@ public class LSystemTree : MonoBehaviour
     [SerializeField] private string[] expressionStrings;
     [SerializeField] private Material[] materials;
     [SerializeField] private Transform parentTransform;
+    [SerializeField] private float scalefactor;
+    [SerializeField] private GameObject[] leaves;
     public Dictionary<string, string> expressions = new Dictionary<string, string>();
     public GameObject branchPrefab;
     public int numIterations;
     private Transform tempParent;
     public float RotateAngle;
-    public int branchStartingLength;
-    public int branchStartingwidth;
+    public float branchStartingLength;
+    public float branchStartingwidth;
     public string startSymbol;
     private string generatedGrammar;
     private List<string> parsedGrammar;
 
     private List<Transform> branches;
+    private List<Transform> leavesList;
+
+    public bool isGenerationComplete { get; private set; } = false;
 
     void Awake()
     {
         branches = new List<Transform>();
+        leavesList = new List<Transform>();
         if (expressionStrings.Length == 0)
         {
             Debug.Log("enter expressions");
@@ -43,13 +50,18 @@ public class LSystemTree : MonoBehaviour
         else
         {
             populateDict();
-            printDict();
-            generateString();
-            Debug.Log(generatedGrammar);
-            parsedGrammar = ParseString(generatedGrammar);
-            printParsed();
+            StartCoroutine(GenerateTreeCoroutine());
             
         }
+    }
+
+    private IEnumerator GenerateTreeCoroutine()
+    {
+        generateString();
+        parsedGrammar = ParseString(generatedGrammar);
+        generateTree();
+        yield return null;
+        isGenerationComplete = true;
     }
 
     private void populateDict()
@@ -109,7 +121,7 @@ public class LSystemTree : MonoBehaviour
     
     private List<string> ParseString(string input)
     {
-        string pattern = @"\+[a-zA-Z]|-[a-zA-Z]|[a-zA-Z\+\-\[\]]";
+        string pattern = @"\+[a-zA-Z]|-[a-zA-Z]|\*[a-zA-Z]|\&[a-zA-Z]|[a-zA-Z\+\-\*\&\[\]]";
         Regex regex = new Regex(pattern);
         MatchCollection matches = regex.Matches(input);
         
@@ -125,15 +137,25 @@ public class LSystemTree : MonoBehaviour
     public GameObject createBranch(float scale, Vector3 position, Quaternion rotation)
     {
         float branchScaleFactor = scale * branchStartingLength;
+        float widthScaleFactor = scale * branchStartingwidth;
         GameObject branch = Instantiate(branchPrefab) as GameObject;
         // branch.transform.parent = parentTransform;
-        branch.transform.localPosition = position;
-        branch.transform.localRotation = rotation;
-        branch.transform.localScale = new Vector3(branch.transform.localScale.x, branchScaleFactor, branch.transform.localScale.z);
+        branch.transform.position = position;
+        branch.transform.rotation = rotation;
+        branch.transform.localScale = new Vector3(widthScaleFactor, branchScaleFactor, widthScaleFactor);
         branches.Add(branch.transform);
+
+        int leafChoice = Random.Range(0, leaves.Length - 1);
+        GameObject leaf = Instantiate(leaves[leafChoice]);
+        position  += branch.transform.up * (branch.transform.localScale.y/2 + branchScaleFactor/2);
+        leaf.transform.position = position;
+        leaf.transform.rotation = rotation;
+        leaf.transform.localScale = scale * leaf.transform.localScale;
+        leavesList.Add(leaf.transform);
         return branch;
     }
-    void Start()
+
+    public void generateTree()
     {
         Stack<GameObject> branchStack = new Stack<GameObject>();
         int depth = 0;
@@ -143,7 +165,7 @@ public class LSystemTree : MonoBehaviour
         obj.transform.parent = parentTransform;
         obj.transform.localPosition = currPosition;
         obj.transform.localRotation = currRotation;
-        obj.transform.localScale = new Vector3(obj.transform.localScale.x, branchStartingLength, obj.transform.localScale.z);
+        obj.transform.localScale = new Vector3(branchStartingwidth, branchStartingLength, branchStartingwidth);
         float scale = 1f;
         int level = 1;
 
@@ -154,7 +176,7 @@ public class LSystemTree : MonoBehaviour
                 branchStack.Push(obj);
                 //at each level reduce scale by factor of 0.8
 
-                scale *= 0.9f;
+                scale *= scalefactor;
                 level += 1;
             }
             else if (val == "]")
@@ -164,10 +186,10 @@ public class LSystemTree : MonoBehaviour
                 currPosition = prev.transform.position;
                 currRotation = prev.transform.rotation;
                 obj = prev;
-                scale /= 0.9f;
+                scale /= scalefactor;
                 level -= 1;
             } 
-            else if (val.Length == 1)
+            else if (val.Length == 1 )
             {
                 //obj is currently previous branch
                 float branchScaleFactor = scale * branchStartingLength;
@@ -177,18 +199,33 @@ public class LSystemTree : MonoBehaviour
             else
             {
                 float xangle;
+                float yangle;
+                float zangle;
                 if (val[0] == '-')
                 {
-                    xangle = -RotateAngle;
+                    xangle = -RotateAngle + Random.Range(-10,10);
+                    zangle = Random.Range(-80,-10)*scalefactor;
                 }
+                else if (val[0] == '+')
+                {
+                    xangle = RotateAngle +  Random.Range(-10,10);
+                    zangle = Random.Range(10, 80)*scalefactor;
+                }
+                
+                else if (val[0] == '*')
+                {
+                    xangle = RotateAngle + Random.Range(-10,10);
+                    zangle = Random.Range(-170,-100)*scalefactor;
+
+                }
+                
                 else
                 {
-                    xangle = RotateAngle;
+                    xangle = -RotateAngle + Random.Range(-10,10);
+                    zangle = Random.Range(100, 170)*scalefactor;
                 }
 
-                float zangle = Random.Range(-1, 1)*RotateAngle;
-                float yangle = Random.Range(-1, 1)*RotateAngle;
-                float oldscale = scale;
+                yangle = Random.Range(0, 90);
                 float branchScaleFactor = scale * branchStartingLength;
                 //at each level reduce scale by factor of 0.8
                 currPosition  += obj.transform.up * (obj.transform.localScale.y/2 + branchScaleFactor/2);
@@ -202,5 +239,14 @@ public class LSystemTree : MonoBehaviour
         {
             trfm.parent = parentTransform;
         }
+
+        foreach (var trfm in leavesList)
+        {
+            trfm.parent = parentTransform;
+        }
+    }
+    void Start()
+    {
+        
     }
 }

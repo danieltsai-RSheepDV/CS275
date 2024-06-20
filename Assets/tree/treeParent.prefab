@@ -1,0 +1,97 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1892889966264031257
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3239937156420858612}
+  - component: {fileID: 4242180556658624175}
+  m_Layer: 0
+  m_Name: TreeGen
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3239937156420858612
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1892889966264031257}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6082624238645657329}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4242180556658624175
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1892889966264031257}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e6b562114007c464cbb80111b63b8b53, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  expressionStrings:
+  - 'X=F[-X][+X][*X][&X]'
+  materials: []
+  parentTransform: {fileID: 6082624238645657329}
+  scalefactor: 0.75
+  leaves:
+  - {fileID: 5817621294303667858, guid: f7c7d7c3499a546f5882acd0ba54b4ea, type: 3}
+  - {fileID: 5797566657848740125, guid: 86c05cf130777488b843d3c6ce79292b, type: 3}
+  - {fileID: 5797566657848740125, guid: 168f3ac78a7f0479abe0ee7ef304cbb2, type: 3}
+  - {fileID: 6168594286081321304, guid: c9fae19c5efb8466a8b5bbddb63061e1, type: 3}
+  - {fileID: 5981686575274602883, guid: 35817dd8d93364697a4f75dcf2f75324, type: 3}
+  - {fileID: 5817621294303667858, guid: 9b718284ed0ea4c0ebc095944ef7f9da, type: 3}
+  branchPrefab: {fileID: 6330616366496959030, guid: 3b5e393bf677544adade71272be251b5,
+    type: 3}
+  numIterations: 4
+  RotateAngle: 25
+  branchStartingLength: 10
+  branchStartingwidth: 1.25
+  startSymbol: X
+--- !u!1 &5213082485558382499
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6082624238645657329}
+  m_Layer: 0
+  m_Name: treeParent
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6082624238645657329
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5213082485558382499}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -82.33583, y: 0, z: 2.2276993}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 3239937156420858612}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
