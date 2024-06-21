@@ -24,6 +24,11 @@ public class CameraController : MonoBehaviour
     {
         MoveCamera();
         MovePlayer();
+
+        if (Input.GetKeyDown(KeyCode.Mouse0))
+        {
+            trackedPlayer.LaunchTongue(transform.forward);
+        }
     }
 
     void MoveCamera()

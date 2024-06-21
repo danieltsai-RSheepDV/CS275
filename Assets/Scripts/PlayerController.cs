@@ -60,11 +60,11 @@ public class PlayerController : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Mouse0))
         {
-            LaunchTongue(Vector3.forward);
+            // LaunchTongue(Vector3.forward);
         }
     }
 
-    void LaunchTongue(Vector3 direction)
+    public void LaunchTongue(Vector3 direction)
     {
         if (tongueReady)
         {

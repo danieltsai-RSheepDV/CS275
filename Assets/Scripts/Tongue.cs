@@ -43,6 +43,15 @@ public class Tongue : MonoBehaviour
                 GameObject obj = Instantiate(other.gameObject);
                 Destroy(other.gameObject);
                 obj.transform.parent = transform;
+                obj.transform.localPosition = Vector3.zero;
+                caught.Add(obj);
+            } else  // fruit 
+            {
+                GameObject obj = Instantiate(other.gameObject);
+                Destroy(other.gameObject);
+                obj.transform.parent = transform;
+                obj.transform.localPosition = Vector3.zero;
+                caught.Add(obj);
             }
         }
     }
